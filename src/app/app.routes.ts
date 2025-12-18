@@ -5,15 +5,22 @@ import { City } from './city/city';
 import { Country } from './country/country';
 import { CountryPopulation } from './country-population/country-population';
 import { Login } from './auth/login';
+import { MyTeamsComponent } from './teams/my-teams';
+import { AdminTeamsComponent } from './teams/admin-teams';
+import { TeamMembersComponent } from './team-members/team-members';
 
 export const routes: Routes = [
-    {path: '', component:Home, pathMatch: 'full'},
-    {path:'weather',component:Weather},
-    {path:'city',component:City},
-    {path:'country',component:Country},
-    {path:'country-population/:id',component:CountryPopulation},
-    {path:'login', component: Login}
+  { path: '', component: Home, pathMatch: 'full' },
 
+  // real app
+  { path: 'my-teams', component: MyTeamsComponent },
+
+  // admin
+  { path: 'admin-teams', component: AdminTeamsComponent },
+  { path: 'team-members', component: TeamMembersComponent },
+
+  { path: 'login', component: Login }
 ];
+
 
 

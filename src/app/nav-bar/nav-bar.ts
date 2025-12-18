@@ -1,23 +1,27 @@
 import { Component } from '@angular/core';
-import { MatButton, MatButtonModule } from '@angular/material/button';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { Router, RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink } from "@angular/router";
 import { AuthService } from '../auth/auth-service';
 
 @Component({
   selector: 'app-nav-bar',
-  imports: [RouterLink,
+  standalone: true,
+  imports: [
+    RouterLink,
     MatToolbarModule,
     MatIconModule,
-    MatButtonModule,
-    
+    MatButtonModule
   ],
   templateUrl: './nav-bar.html',
   styleUrl: './nav-bar.scss'
 })
 export class NavBar {
-constructor(public authService: AuthService){
+  constructor(public authService: AuthService, private router: Router) {}
 
-}
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

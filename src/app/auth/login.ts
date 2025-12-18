@@ -22,7 +22,7 @@ export class Login implements OnInit{
   }
    onSubmit(){
     let loginRequest = <LoginRequest>{
-      username: this.form.controls["username"].value,
+      userName: this.form.controls["username"].value,
       password: this.form.controls["password"].value
    }
     this.authService.login(loginRequest).subscribe({
