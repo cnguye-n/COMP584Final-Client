@@ -36,10 +36,10 @@ export class Profile implements OnInit {
         this.teams = teams ?? [];
 
         // If user is Owner of ANY team → Owner
+        const role = (r: any) => (r ?? '').toString().toLowerCase();
         const anyOwner = this.teams.some(
-          t => (t.myRole ?? '').toLowerCase() === 'owner'
+          t => (t.myRole ?? '').toString().toLowerCase() === 'owner'
         );
-
         this.teamRole = anyOwner ? 'Owner' : 'Member';
       },
       error: (err) => {
