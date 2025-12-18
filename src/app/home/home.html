@@ -10,73 +10,75 @@
 
   @if (!loading && summary) {
 
-    <!-- Card 1: System Summary -->
-    <div class="pink-card">
-      <h2 class="card-title">System Summary</h2>
+    <div class="cards-grid">
+      <!-- Card 1: System Summary -->
+      <div class="pink-card">
+        <h2 class="card-title">System Summary</h2>
 
-      <div class="stats-grid">
-        <div class="stat">
-          <div class="stat-label">Number of Teams in the System</div>
-          <div class="stat-value">{{ summary.numberOfTeams }}</div>
-        </div>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="stat-label">Number of Teams in the System</div>
+            <div class="stat-value">{{ summary.numberOfTeams }}</div>
+          </div>
 
-        <div class="stat">
-          <div class="stat-label">Number of Users Total in the System</div>
-          <div class="stat-value">{{ summary.numberOfUsers }}</div>
-        </div>
+          <div class="stat">
+            <div class="stat-label">Number of Users Total in the System</div>
+            <div class="stat-value">{{ summary.numberOfUsers }}</div>
+          </div>
 
-        <div class="stat">
-          <div class="stat-label">Number of Leaders in the System</div>
-          <div class="stat-value">{{ summary.numberOfLeaders }}</div>
+          <div class="stat">
+            <div class="stat-label">Number of Leaders in the System</div>
+            <div class="stat-value">{{ summary.numberOfLeaders }}</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Card 2: Teams -->
-    <div class="pink-card">
-      <h2 class="card-title">Teams</h2>
+      <!-- Card 2: Teams -->
+      <div class="pink-card">
+        <h2 class="card-title">Teams</h2>
 
-      @if (summary.teams.length > 0) {
+        @if (summary.teams.length > 0) {
+          <ul class="clean-list">
+            @for (team of summary.teams; track team) {
+              <li>{{ team }}</li>
+            }
+          </ul>
+        } @else {
+          <div class="muted">No teams found.</div>
+        }
+      </div>
+
+      <!-- Card 3: Team Leaders -->
+      <div class="pink-card">
+        <h2 class="card-title">Team Leaders</h2>
+
+        @if (summary.teamLeaders.length > 0) {
+          <ul class="clean-list">
+            @for (leader of summary.teamLeaders; track leader.teamName) {
+              <li>
+                <strong>{{ leader.teamName }}</strong>
+                — {{ leader.leaderUserName }}
+              </li>
+            }
+          </ul>
+        } @else {
+          <div class="muted">No team leaders found.</div>
+        }
+      </div>
+
+      <!-- Card 4: Info about the site -->
+      <div class="pink-card">
+        <h2 class="card-title">Information About the Site</h2>
+
         <ul class="clean-list">
-          @for (team of summary.teams; track team) {
-            <li>{{ team }}</li>
-          }
+          <li>
+            Logged in users that are not admin (just registered users) can see what members are in their team.
+          </li>
+          <li>
+            If your JWT role is <strong>admin</strong>, you can see all registered members in the system.
+          </li>
         </ul>
-      } @else {
-        <div class="muted">No teams found.</div>
-      }
-    </div>
-
-    <!-- Card 3: Team Leaders -->
-    <div class="pink-card">
-      <h2 class="card-title">Team Leaders</h2>
-
-      @if (summary.teamLeaders.length > 0) {
-        <ul class="clean-list">
-          @for (leader of summary.teamLeaders; track leader.teamName) {
-            <li>
-              <strong>{{ leader.teamName }}</strong>
-              — {{ leader.leaderUserName }}
-            </li>
-          }
-        </ul>
-      } @else {
-        <div class="muted">No team leaders found.</div>
-      }
-    </div>
-
-    <!-- Card 4: Info about the site -->
-    <div class="pink-card">
-      <h2 class="card-title">Information About the Site</h2>
-
-      <ul class="clean-list">
-        <li>
-          Logged in users that are not admin (just registered users) can see what members are in their team.
-        </li>
-        <li>
-          If your JWT role is <strong>admin</strong>, you can see all registered members in the system.
-        </li>
-      </ul>
+      </div>
     </div>
 
   }
