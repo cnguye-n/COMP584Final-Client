@@ -1,17 +1,14 @@
 <div class="home-wrap">
 
-  <!-- Loading state -->
-  <div *ngIf="loading" class="status">
-    Loading system information…
-  </div>
+  @if (loading) {
+    <div class="status">Loading system information...</div>
+  }
 
-  <!-- Error state -->
-  <div *ngIf="!loading && error" class="status error">
-    {{ error }}
-  </div>
+  @if (!loading && error) {
+    <div class="status error">{{ error }}</div>
+  }
 
-  <!-- Main content -->
-  <ng-container *ngIf="!loading && summary">
+  @if (!loading && summary) {
 
     <!-- Card 1: System Summary -->
     <div class="pink-card">
@@ -39,47 +36,32 @@
     <div class="pink-card">
       <h2 class="card-title">Teams</h2>
 
-      <ul class="clean-list" *ngIf="summary.teams.length > 0; else noTeams">
-        <li *ngFor="let team of summary.teams">
-          {{ team }}
-        </li>
-      </ul>
-
-      <ng-template #noTeams>
-        <div class="muted">No teams found.</div>
-      </ng-template>
+      @if (summary.teams.length > 0) {
+        <ul class="clean-list">
+          @for (team of summary.teams; track team) {
+            <li>{{ team }}</li>
+          }
+        </ul>
+      } @else {
+        <div class="status">No teams found.</div>
+      }
     </div>
 
     <!-- Card 3: Team Leaders -->
     <div class="pink-card">
       <h2 class="card-title">Team Leaders</h2>
 
-      <ul class="clean-list" *ngIf="summary.teamLeaders.length > 0; else noLeaders">
-        <li *ngFor="let leader of summary.teamLeaders">
-          <strong>{{ leader.teamName }}</strong>
-          — {{ leader.leaderUserName }}
-        </li>
-      </ul>
-
-      <ng-template #noLeaders>
-        <div class="muted">No team leaders found.</div>
-      </ng-template>
+      @if (summary.teamLeaders.length > 0) {
+        <ul class="clean-list">
+          @for (tl of summary.teamLeaders; track tl.teamName + '-' + tl.leaderUserName) {
+            <li><b>{{ tl.teamName }}</b> — {{ tl.leaderUserName }}</li>
+          }
+        </ul>
+      } @else {
+        <div class="status">No team leaders found.</div>
+      }
     </div>
 
-    <!-- Card 4: Info about the site -->
-    <div class="pink-card">
-      <h2 class="card-title">Information About the Site</h2>
-
-      <ul class="clean-list">
-        <li>
-          Logged in users that are not admin (just registered users) can see what members are in their team.
-        </li>
-        <li>
-          If your JWT role is <strong>admin</strong>, you can see all registered members in the system.
-        </li>
-      </ul>
-    </div>
-
-  </ng-container>
+  }
 
 </div>

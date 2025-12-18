@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { HomeService } from '../services/home.service';
 import { HomeSummaryData } from '../home-summary-data';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule], //required for *ngIf/*ngFor
+  imports: [],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
@@ -16,9 +16,24 @@ export class Home implements OnInit {
   loading = true;
   error = '';
 
-  constructor(private homeService: HomeService) {}
+  constructor(private homeService: HomeService, private router: Router) {}
 
   ngOnInit(): void {
+  // load once initially
+  this.loadSummary();
+
+  // reload whenever /home is navigated to again
+  this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => {
+      this.loadSummary();
+    });
+}
+
+  private loadSummary(): void {
+    this.loading = true;
+    this.error = '';
+
     this.homeService.getSummary().subscribe({
       next: (data) => {
         this.summary = data;
@@ -32,3 +47,4 @@ export class Home implements OnInit {
     });
   }
 }
+
