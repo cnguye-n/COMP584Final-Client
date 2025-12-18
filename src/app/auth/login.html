@@ -1,13 +1,36 @@
-<div>
-    <h1>Login</h1>
-    <form [formGroup]= "form" (ngSubmit)="onSubmit()">
-        <label>Name 
-        </label>
-        <input type="text" name = "username" formControlName = "username">
-        <br>
-        <label>Password</label>
-        <input type ="password" name="password" formControlName="password">
-        <br>
-        <button type="submit" >submit</button>
-    </form>
+<div class="login-wrap">
+  <h1>Login</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <label for="username">Name</label>
+    <input
+      id="username"
+      type="text"
+      name="username"
+      formControlName="username"
+      autocomplete="username"
+    />
+
+    <br />
+
+    <label for="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      name="password"
+      formControlName="password"
+      autocomplete="current-password"
+    />
+
+    <br />
+
+    <!-- optional: simple error text -->
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || submitting">
+      {{ submitting ? 'Logging in...' : 'submit' }}
+    </button>
+  </form>
 </div>
