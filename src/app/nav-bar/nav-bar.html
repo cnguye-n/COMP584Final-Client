@@ -1,7 +1,12 @@
 <header class="nav-wrap">
   <mat-toolbar color="primary" class="nav">
     <!-- Home (left) -->
-    <a mat-icon-button class="home-btn" [routerLink]="['/']" aria-label="Home">
+    <a mat-icon-button
+      class="home-btn"
+      [routerLink]="['/home']"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+      aria-label="Home">
       <mat-icon>home</mat-icon>
     </a>
 

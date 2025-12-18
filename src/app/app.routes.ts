@@ -6,21 +6,23 @@ import { AdminTeamsComponent } from './teams/admin-teams';
 import { TeamMembersComponent } from './team-members/team-members';
 
 export const routes: Routes = [
-  { path: '', component: Home, pathMatch: 'full' },
+  // Home routes
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: Home },
 
-  // real app
+  // App
   { path: 'my-teams', component: MyTeamsComponent },
-
-  // admin
   { path: 'admin-teams', component: AdminTeamsComponent },
   { path: 'team-members', component: TeamMembersComponent },
 
-  //everyone who logged in (admin or user)
+  // Profile (lazy)
   { path: 'profile', loadComponent: () => import('./profile/profile').then(m => m.Profile) },
 
-
+  // Auth
   { path: 'login', component: Login }
 ];
+
+
 
 
 
