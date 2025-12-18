@@ -1,9 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
+import { map, shareReplay } from 'rxjs';
 import { AuthService } from '../auth/auth-service';
-import { TeamsService } from '../teams/teams.service';
+import { TeamsService, MyTeamDto } from '../teams/teams.service';
+
+type ProfileVm = {
+  username: string;
+  jwtSystemRole: 'Admin' | 'User';
+  teamRole: 'Owner' | 'Member';
+  teams: MyTeamDto[];
+};
 
 @Component({
   selector: 'app-profile',
@@ -12,41 +20,28 @@ import { TeamsService } from '../teams/teams.service';
   templateUrl: './profile.html',
   styleUrl: './profile.scss'
 })
-export class Profile implements OnInit {
-  username = '';
-  jwtSystemRole = 'User';
-  teamRole = 'Member';
-  teams: any[] = [];
+export class Profile {
+  private authService = inject(AuthService);
+  private teamsService = inject(TeamsService);
 
-  constructor(
-    public authService: AuthService,
-    private teamsService: TeamsService
-  ) {}
+  vm$ = this.teamsService.mine().pipe(
+    map((teams) => {
+      const username = this.authService.getDisplayName();
+      const jwtSystemRole: 'Admin' | 'User' = this.authService.isAdmin() ? 'Admin' : 'User';
 
-  ngOnInit(): void {
-    // Logged-in username
-    this.username = this.authService.getDisplayName();
+      const anyOwner = (teams ?? []).some(
+        t => (t.myRole ?? '').toString().toLowerCase() === 'owner'
+      );
 
-    // JWT System Role
-    this.jwtSystemRole = this.authService.isAdmin() ? 'Admin' : 'User';
+      const teamRole: 'Owner' | 'Member' = anyOwner ? 'Owner' : 'Member';
 
-    // Load teams from existing API
-    this.teamsService.mine().subscribe({
-      next: (teams) => {
-        this.teams = teams ?? [];
-
-        // If user is Owner of ANY team → Owner
-        const role = (r: any) => (r ?? '').toString().toLowerCase();
-        const anyOwner = this.teams.some(
-          t => (t.myRole ?? '').toString().toLowerCase() === 'owner'
-        );
-        this.teamRole = anyOwner ? 'Owner' : 'Member';
-      },
-      error: (err) => {
-        console.error('Failed to load teams', err);
-        this.teams = [];
-        this.teamRole = 'Member';
-      }
-    });
-  }
+      return {
+        username,
+        jwtSystemRole,
+        teamRole,
+        teams: teams ?? []
+      } as ProfileVm;
+    }),
+    shareReplay(1)
+  );
 }
