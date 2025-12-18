@@ -1,22 +1,102 @@
-.container {
-padding: 5px 10px;
+/* No padding/margins around the toolbar */
+.nav-wrap {
+  padding: 0;
+  margin: 0;
 }
-a.navbar-brand {
-white-space: normal;
-text-align: center;
-word-break: break-all;
+
+/* Full-width bar, no pill */
+.nav {
+  border-radius: 0;
+  margin: 0;
+  width: 100%;
+  min-height: 64px;
+
+  background-color: var(--mat-sys-primary) !important;
+  color: var(--mat-sys-on-primary);
+  /* subtle shadow under navbar */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
 }
-html {
-font-size: 14px;
+
+/* Push right content to the end */
+.spacer {
+  flex: 1 1 auto;
 }
-@media (min-width: 768px) {
-html {
-font-size: 16px;
+
+/* Right links group */
+.right-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
+
+/* Link styling */
+.nav-link {
+  color: var(--mat-sys-on-primary) !important;
+  font-weight: 600;
+  position: relative;
 }
-.box-shadow {
-box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+
+/* Light pink underline */
+.nav-link.active-link::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 2px;
+  height: 3px;
+  border-radius: 999px;
+    /* Hot pink → light pink gradient */
+  background: linear-gradient(
+     90deg,
+    #FAA4BD 0%,
+    #F564A9 50%,
+    #FAA4BD 100%
+  );
 }
-.separator {
-flex: 1 1 auto;
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
 }
+
+
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+
+/* Add | after every item except the last */
+.nav-item:not(:last-child)::after {
+  content: "|";
+  margin: 0 6px;
+  color: #FAA4BD; /* light pink */
+  font-weight: 500;
+}
+
+
+
+/* Login/Logout button */
+.auth-btn {
+  font-weight: 700;
+  border-radius: 10px; /* small rounding is fine, not “pill” */
+  margin-left: 6px;
+}
+
+.home-btn {
+  margin-left: 4px;
+}
+
+.home-btn,
+.home-btn mat-icon {
+  color: var(--mat-sys-on-primary) !important;
+}
+
+.home-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+
+mat-icon {
+  transform: translateY(-1px);
+}
+

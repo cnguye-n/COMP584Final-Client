@@ -1,9 +1,5 @@
 import { Routes } from '@angular/router';
 import { Home } from './home/home';
-import { Weather } from './weather/weather';
-import { City } from './city/city';
-import { Country } from './country/country';
-import { CountryPopulation } from './country-population/country-population';
 import { Login } from './auth/login';
 import { MyTeamsComponent } from './teams/my-teams';
 import { AdminTeamsComponent } from './teams/admin-teams';
