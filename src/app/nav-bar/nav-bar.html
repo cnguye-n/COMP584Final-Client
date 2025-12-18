@@ -1,0 +1,17 @@
+<header>
+    <mat-toolbar color="primary">
+        <button mat-icon-button [routerLink]="['/']">
+            <mat-icon>home</mat-icon>
+        </button> |
+        <a mat-flat-button color="primary" [routerLink]="['/weather']">Weather</a> |
+        <a mat-flat-button color="primary" [routerLink]="['/city']">City</a> |
+        <a mat-flat-button color="primary" [routerLink]="['/country']">Country</a> |
+        <span class="separator"></span>
+        @if (authService.isLoggedIn()) {
+        <a mat-flat-button color="primary" (click)="authService.logout()">Logout</a>
+        }
+        @else {
+        <a mat-flat-button color="primary" [routerLink]="['/login']">Login</a>
+        }
+    </mat-toolbar>
+</header>
