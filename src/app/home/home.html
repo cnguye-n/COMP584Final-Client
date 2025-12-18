@@ -43,7 +43,7 @@
           }
         </ul>
       } @else {
-        <div class="status">No teams found.</div>
+        <div class="muted">No teams found.</div>
       }
     </div>
 
@@ -53,13 +53,30 @@
 
       @if (summary.teamLeaders.length > 0) {
         <ul class="clean-list">
-          @for (tl of summary.teamLeaders; track tl.teamName + '-' + tl.leaderUserName) {
-            <li><b>{{ tl.teamName }}</b> — {{ tl.leaderUserName }}</li>
+          @for (leader of summary.teamLeaders; track leader.teamName) {
+            <li>
+              <strong>{{ leader.teamName }}</strong>
+              — {{ leader.leaderUserName }}
+            </li>
           }
         </ul>
       } @else {
-        <div class="status">No team leaders found.</div>
+        <div class="muted">No team leaders found.</div>
       }
+    </div>
+
+    <!-- Card 4: Info about the site -->
+    <div class="pink-card">
+      <h2 class="card-title">Information About the Site</h2>
+
+      <ul class="clean-list">
+        <li>
+          Logged in users that are not admin (just registered users) can see what members are in their team.
+        </li>
+        <li>
+          If your JWT role is <strong>admin</strong>, you can see all registered members in the system.
+        </li>
+      </ul>
     </div>
 
   }
