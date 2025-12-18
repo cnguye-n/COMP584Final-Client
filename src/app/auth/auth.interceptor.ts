@@ -6,18 +6,10 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment.development';
 
 @Injectable()
-export class JwtInterceptor implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Only attach token for API calls (optional but recommended)
-    const isApiCall = req.url.startsWith(environment.apiUrl);
-
-    if (!isApiCall) {
-      return next.handle(req);
-    }
-
     const token = localStorage.getItem('auth_token');
 
     if (!token) {
@@ -25,7 +17,9 @@ export class JwtInterceptor implements HttpInterceptor {
     }
 
     const authReq = req.clone({
-      setHeaders: { Authorization: `Bearer ${token}` }
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
     });
 
     return next.handle(authReq);

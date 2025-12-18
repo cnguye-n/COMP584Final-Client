@@ -1,75 +1,101 @@
-<header class="nav-wrap">
-  <mat-toolbar color="primary" class="nav">
-    <!-- Home (left) -->
-    <a mat-icon-button
-      class="home-btn"
-      [routerLink]="['/home']"
-      routerLinkActive="active-link"
-      [routerLinkActiveOptions]="{ exact: true }"
-      aria-label="Home">
-      <mat-icon>home</mat-icon>
-    </a>
+<mat-toolbar color="primary" class="nav">
+  <!-- Home (left) -->
+  <a
+    mat-icon-button
+    class="home-btn"
+    [routerLink]="['/home']"
+    routerLinkActive="active-link"
+    [routerLinkActiveOptions]="{ exact: true }"
+    aria-label="Home"
+  >
+    <mat-icon>home</mat-icon>
+  </a>
 
-    <span class="spacer"></span>
+  <span class="spacer"></span>
 
-    <!-- About (right) -->
-     <div class="right-links">
-        @if (authService.isLoggedIn()) {
-          <span class="nav-item">
-            <a mat-button
-              class="nav-link"
-              [routerLink]="['/my-teams']"
-              routerLinkActive="active-link"
-              [routerLinkActiveOptions]="{ exact: true }">
-              My Teams
-            </a>
-          </span>
-        }
+  <!-- Right links -->
+  <div class="right-links">
 
-        @if (authService.isAdmin()) {
-          <span class="nav-item">
-            <a mat-button
-              class="nav-link"
-              [routerLink]="['/admin-teams']"
-              routerLinkActive="active-link"
-              [routerLinkActiveOptions]="{ exact: true }">
-              Admin Teams
-            </a>
-          </span>
+    <!-- My Teams (logged in users) -->
+    @if (authService.isLoggedIn()) {
+      <span class="nav-item">
+        <a
+          mat-button
+          class="nav-link"
+          [routerLink]="['/my-teams']"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          My Teams
+        </a>
+      </span>
+    }
 
-          <span class="nav-item">
-            <a mat-button
-              class="nav-link"
-              [routerLink]="['/team-members']"
-              routerLinkActive="active-link"
-              [routerLinkActiveOptions]="{ exact: true }">
-              Team Members
-            </a>
-          </span>
-        }
+    <!-- Team Members (admin only) -->
+    @if (authService.isAdmin()) {
+      <span class="nav-item">
+        <a
+          mat-button
+          class="nav-link"
+          [routerLink]="['/team-members']"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Team Members
+        </a>
+      </span>
+    }
 
-        @if (authService.isLoggedIn()) {
-          <span class="nav-item">
-            <a mat-button class="nav-link"
-              [routerLink]="['/profile']"
-              routerLinkActive="active-link"
-              [routerLinkActiveOptions]="{ exact: true }">
-              Profile
-            </a>
-          </span>
-        }
+    <!-- Admin Teams (admin only) -->
+    @if (authService.isAdmin()) {
+      <span class="nav-item">
+        <a
+          mat-button
+          class="nav-link"
+          [routerLink]="['/admin-teams']"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Admin Teams
+        </a>
+      </span>
+    }
 
-        <span class="nav-item">
-          @if (authService.isLoggedIn()) {
-            <button mat-flat-button class="auth-btn" (click)="logout()">Logout</button>
-          } @else {
-            <a mat-flat-button class="auth-btn" [routerLink]="['/login']">Login</a>
-          }
-        </span>
-      </div>
+    <!-- Profile -->
+    @if (authService.isLoggedIn()) {
+      <span class="nav-item">
+        <a
+          mat-button
+          class="nav-link"
+          [routerLink]="['/profile']"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Profile
+        </a>
+      </span>
+    }
 
+    <!-- Auth buttons -->
+    <span class="nav-item">
+      @if (authService.isLoggedIn()) {
+        <button
+          mat-flat-button
+          class="auth-btn"
+          (click)="logout()"
+        >
+          Logout
+        </button>
+      } @else {
+        <a
+          mat-flat-button
+          class="auth-btn"
+          [routerLink]="['/login']"
+        >
+          Login
+        </a>
+      }
+    </span>
 
-  </mat-toolbar>
-</header>
-
-
+  </div>
+</mat-toolbar>

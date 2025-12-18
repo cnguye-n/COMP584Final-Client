@@ -18,7 +18,7 @@ import { JwtInterceptor } from './auth/jwt.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideZonelessChangeDetection(),
+    provideZonelessChangeDetection(), 
     provideRouter(routes),
 
     // IMPORTANT: enable DI-based interceptors

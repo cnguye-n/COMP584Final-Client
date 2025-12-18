@@ -9,14 +9,18 @@ import { TeamsService } from './teams.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <h2>My Teams</h2>
+  <h2>My Teams</h2>
 
-    <button (click)="load()">Load My Teams</button>
+  <button (click)="load()">Load My Teams</button>
 
-    <div *ngIf="error" style="color:red">{{ error }}</div>
+  @if (error) {
+    <div style="color:red">{{ error }}</div>
+  }
 
-    <pre *ngIf="data">{{ data | json }}</pre>
-  `
+  @if (data) {
+    <pre>{{ data | json }}</pre>
+  }
+`
 })
 export class MyTeamsComponent {
   data: any = null;
