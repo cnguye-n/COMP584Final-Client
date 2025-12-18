@@ -1,0 +1,37 @@
+.profile-card {
+  max-width: 720px;
+  margin: 24px;
+  padding: 18px;
+  background: #f3b3c5;
+  color: #2b1e26;
+  border-radius: 16px;
+  border-radius: 14px;
+}
+
+.title {
+  margin: 0 0 12px 0;
+}
+
+.subtitle {
+  margin: 18px 0 8px 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.label {
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.value {
+  font-weight: 600;
+}
+
+.muted {
+  opacity: 0.75;
+}

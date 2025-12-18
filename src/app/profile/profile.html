@@ -1,0 +1,32 @@
+<mat-card class="profile-card">
+  <h2 class="title">Profile</h2>
+
+  <div class="row">
+    <div class="label">Logged in as:</div>
+    <div class="value">{{ username }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">JWT System Role (User or Admin):</div>
+    <div class="value">{{ jwtSystemRole }}</div>
+  </div>
+
+  <div class="row">
+    <div class="label">Team Role (Owner or Member):</div>
+    <div class="value">{{ teamRole }}</div>
+  </div>
+
+  <h3 class="subtitle">Teams belong to</h3>
+
+  @if (teams.length > 0) {
+    <mat-list>
+      @for (t of teams; track t.teamId) {
+        <mat-list-item>
+          {{ t.name }} — {{ t.myRole }}
+        </mat-list-item>
+      }
+    </mat-list>
+  } @else {
+    <p class="muted">No teams loaded yet.</p>
+  }
+</mat-card>

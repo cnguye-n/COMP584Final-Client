@@ -43,6 +43,17 @@
           </span>
         }
 
+        @if (authService.isLoggedIn()) {
+          <span class="nav-item">
+            <a mat-button class="nav-link"
+              [routerLink]="['/profile']"
+              routerLinkActive="active-link"
+              [routerLinkActiveOptions]="{ exact: true }">
+              Profile
+            </a>
+          </span>
+        }
+
         <span class="nav-item">
           @if (authService.isLoggedIn()) {
             <button mat-flat-button class="auth-btn" (click)="logout()">Logout</button>

@@ -15,6 +15,10 @@ export const routes: Routes = [
   { path: 'admin-teams', component: AdminTeamsComponent },
   { path: 'team-members', component: TeamMembersComponent },
 
+  //everyone who logged in (admin or user)
+  { path: 'profile', loadComponent: () => import('./profile/profile').then(m => m.Profile) },
+
+
   { path: 'login', component: Login }
 ];
 

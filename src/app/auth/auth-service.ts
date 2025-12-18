@@ -75,7 +75,41 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.getRoles().includes('Admin');
+  return this.getRoles().some(r => (r ?? '').toLowerCase() === 'admin');
+}
+
+
+  /** Display name/email for UI */
+  getDisplayName(): string {
+    const p = this.getPayload();
+    if (!p) return '';
+
+    // Common identity claim keys (ASP.NET + JWT)
+    return (
+      p.unique_name ??
+      p.name ??
+      p.preferred_username ??
+      p.email ??
+      p['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ??
+      p['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ??
+      p.sub ??
+      ''
+    );
+  }
+
+  /** User id (useful for profile/requests if needed) */
+  getUserId(): string {
+    const p = this.getPayload();
+    if (!p) return '';
+
+    return (
+      p.nameid ??
+      p.userId ??
+      p.userid ??
+      p['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ??
+      p.sub ??
+      ''
+    );
   }
 
   /** Optional helper for debugging */
@@ -83,3 +117,4 @@ export class AuthService {
     return this.getPayload();
   }
 }
+
