@@ -16,23 +16,8 @@
   <!-- Right links -->
   <div class="right-links">
 
-    <!-- My Teams (logged in users) -->
+      <!-- Team Members (logged in users) -->
     @if (authService.isLoggedIn()) {
-      <span class="nav-item">
-        <a
-          mat-button
-          class="nav-link"
-          [routerLink]="['/my-teams']"
-          routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          My Teams
-        </a>
-      </span>
-    }
-
-    <!-- Team Members (admin only) -->
-    @if (authService.isAdmin()) {
       <span class="nav-item">
         <a
           mat-button
@@ -44,21 +29,21 @@
           Team Members
         </a>
       </span>
-    }
-
-    <!-- Admin Teams (admin only) -->
-    @if (authService.isAdmin()) {
-      <span class="nav-item">
-        <a
-          mat-button
-          class="nav-link"
-          [routerLink]="['/admin-teams']"
-          routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          Admin Teams
-        </a>
-      </span>
+      
+      <!-- Admin Teams (admin only) -->
+      @if (authService.isAdmin()) {
+        <span class="nav-item">
+          <a
+            mat-button
+            class="nav-link"
+            [routerLink]="['/admin-teams']"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Admin
+          </a>
+        </span>
+      }
     }
 
     <!-- Profile -->
