@@ -1,7 +1,19 @@
 .admin-card {
   max-width: 1100px;
-  margin: 0;
+  margin: 0 auto;
+  width: 100%;
 }
+
+/* Keep Admin page card pink even when very tall */
+.admin-card.pink-card {
+  background: linear-gradient(
+    180deg,
+    rgba(245, 100, 169, 0.22) 0%,
+    rgba(245, 100, 169, 0.10) 55%,
+    rgba(255, 255, 255, 0.70) 100%
+  );
+}
+
 
 .title {
   margin: 0;
@@ -47,3 +59,91 @@
 .muted {
   color: rgba(58, 47, 53, 0.7);
 }
+
+.team-block {
+  margin-top: 16px;
+}
+
+.team-title {
+  margin: 0 0 10px 0;
+  font-weight: 900;
+  color: var(--mat-sys-primary);
+}
+
+.stats {
+  display: grid;
+  gap: 12px;
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.stat {
+  padding: 14px 16px;
+  border-radius: var(--ui-radius-md);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(139, 122, 130, 0.18);
+  box-shadow: var(--ui-shadow-soft);
+}
+
+.stat .label {
+  font-weight: 800;
+  opacity: 0.85;
+}
+
+.stat .value {
+  margin-top: 6px;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--mat-sys-primary);
+}
+
+.stats-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.stat.compact {
+  flex: 1 1 160px;
+  padding: 12px 14px;
+  border-radius: var(--ui-radius-md);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(139, 122, 130, 0.18);
+  box-shadow: var(--ui-shadow-soft);
+  min-width: 140px;
+}
+
+.stat.compact .label {
+  font-weight: 800;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.stat.compact .value {
+  margin-top: 4px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--mat-sys-primary);
+}
+
+/* =========================
+   Admin-only primary buttons
+   ========================= */
+
+:host ::ng-deep .admin-card .mat-mdc-raised-button.mat-primary {
+  background-color: var(--mat-sys-primary) !important;
+  color: var(--mat-sys-on-primary) !important;
+}
+
+/* Hover */
+:host ::ng-deep .admin-card .mat-mdc-raised-button.mat-primary:hover {
+  filter: brightness(1.05);
+}
+
+.actions-under {
+  grid-column: 1 / -1;   /* span both columns */
+  margin-top: 4px;
+}
+

@@ -3,6 +3,17 @@
   margin: 0; /* page-wrap handles spacing */
 }
 
+/* Keep Profile card consistently pink */
+.profile-card.pink-card {
+  background: linear-gradient(
+    180deg,
+    rgba(245, 100, 169, 0.22) 0%,
+    rgba(245, 100, 169, 0.12) 55%,
+    rgba(255, 255, 255, 0.70) 100%
+  );
+}
+
+
 .header {
   display: flex;
   align-items: flex-start;

@@ -7,42 +7,111 @@
       <div class="status error">{{ error }}</div>
     }
 
-    @if (vm$ | async; as data) {
-      @let rows = data[0];
-      @let usersNotInTeam = data[1];
-      @let teams = data[2];
+    @if (vm$ | async; as vm) {
 
+      <!-- =====================
+           TEAM TABLES (one per team)
+           ===================== -->
       <section class="section">
-        <h2 class="section-title">All Users + Team</h2>
+        <h2 class="section-title">Teams</h2>
 
-        <div class="table-shell">
-          <table class="modern-table">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Email</th>
-                <th>Team</th>
-                <th>Role</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (r of rows; track r.userId + '-' + (r.teamId ?? 'none')) {
+        @for (t of vm.teams; track t.teamId) {
+          <div class="team-block">
+            <h3 class="team-title">{{ t.name }}</h3>
+
+            @if ((vm.byTeam[t.name] ?? []).length > 0) {
+              <div class="table-shell">
+                <table class="modern-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (r of (vm.byTeam[t.name] ?? []); track r.userId) {
+                      <tr>
+                        <td class="mono">{{ r.userName }}</td>
+                        <td class="muted">{{ r.email || '—' }}</td>
+                        <td>
+                          <span class="pill" [class.pill-owner]="(r.roleInTeam || '').toLowerCase() === 'owner'">
+                            {{ r.roleInTeam || 'None' }}
+                          </span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <div class="status subtle">No users in this team.</div>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- =====================
+           USERS NOT IN A TEAM TABLE
+           ===================== -->
+      <section class="section">
+        <h2 class="section-title">Users Not In A Team</h2>
+
+        @if (vm.unassigned.length > 0) {
+          <div class="table-shell">
+            <table class="modern-table">
+              <thead>
                 <tr>
-                  <td class="mono">{{ r.userName }}</td>
-                  <td class="muted">{{ r.email || '—' }}</td>
-                  <td>{{ r.teamName || '—' }}</td>
-                  <td>
-                    <span class="pill" [class.pill-owner]="(r.roleInTeam || '').toLowerCase() === 'owner'">
-                      {{ r.roleInTeam || '—' }}
-                    </span>
-                  </td>
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Status</th>
                 </tr>
-              }
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                @for (u of vm.unassigned; track u.userId) {
+                  <tr>
+                    <td class="mono">{{ u.userName }}</td>
+                    <td class="muted">{{ u.email || '—' }}</td>
+                    <td><span class="pill pill-neutral">Not in a team</span></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="status subtle">All users are assigned to a team.</div>
+        }
+      </section>
+
+      <!-- =====================
+           STATS (ROW)  ✅ MOVED ABOVE ADD TEAM MEMBER
+           ===================== -->
+      <section class="section">
+        <h2 class="section-title">Stats</h2>
+
+        <div class="stats-row">
+          <div class="stat compact">
+            <div class="label">Total users</div>
+            <div class="value">{{ vm.stats.totalUsers }}</div>
+          </div>
+
+          @for (s of vm.stats.teamStats; track s.teamId) {
+            <div class="stat compact">
+              <div class="label">Users in {{ s.name }}</div>
+              <div class="value">{{ s.count }}</div>
+            </div>
+          }
+
+          <div class="stat compact">
+            <div class="label">Not in team</div>
+            <div class="value">{{ vm.stats.notInTeamCount }}</div>
+          </div>
         </div>
       </section>
 
+      <!-- =====================
+           ADD MEMBER FORM
+           ===================== -->
       <section class="section">
         <h2 class="section-title">Add Team Member</h2>
 
@@ -50,7 +119,7 @@
           <mat-form-field appearance="outline">
             <mat-label>User (not in a team)</mat-label>
             <mat-select formControlName="userId">
-              @for (u of usersNotInTeam; track u.userId) {
+              @for (u of vm.usersNotInTeam; track u.userId) {
                 <mat-option [value]="u.userId">
                   {{ u.userName }} ({{ u.email || 'no email' }})
                 </mat-option>
@@ -61,7 +130,7 @@
           <mat-form-field appearance="outline">
             <mat-label>Team</mat-label>
             <mat-select formControlName="teamId">
-              @for (t of teams; track t.teamId) {
+              @for (t of vm.teams; track t.teamId) {
                 <mat-option [value]="t.teamId">{{ t.name }}</mat-option>
               }
             </mat-select>
@@ -75,6 +144,9 @@
         </form>
       </section>
 
+      <!-- =====================
+           REMOVE MEMBER FORM (non-owners only)
+           ===================== -->
       <section class="section">
         <h2 class="section-title">Remove From Team</h2>
 
@@ -82,7 +154,7 @@
           <mat-form-field appearance="outline">
             <mat-label>User + Team</mat-label>
             <mat-select formControlName="membership">
-              @for (r of rows; track r.userId + '-' + (r.teamId ?? 'none')) {
+              @for (r of vm.rows; track r.userId + '-' + (r.teamId ?? 'none')) {
                 @if (r.teamId && (r.roleInTeam || '').toLowerCase() !== 'owner') {
                   <mat-option [value]="r.userId + '|' + r.teamId">
                     {{ r.userName }} — {{ r.teamName }} ({{ r.roleInTeam || 'Member' }})
@@ -92,7 +164,7 @@
             </mat-select>
           </mat-form-field>
 
-          <div class="actions">
+          <div class="actions actions-under">
             <button mat-raised-button color="primary" type="button" (click)="removeMember()">
               Remove
             </button>
