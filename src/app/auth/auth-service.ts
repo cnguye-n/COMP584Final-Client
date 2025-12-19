@@ -112,6 +112,37 @@ export class AuthService {
     );
   }
 
+  getEmail(): string {
+    const token = localStorage.getItem(this.tokenKey);
+    if (!token) return '';
+
+    const parts = token.split('.');
+    if (parts.length !== 3) return '';
+
+    try {
+      // base64url -> base64
+      const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(
+        atob(b64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+
+      const payload = JSON.parse(json);
+
+      // .NET ClaimTypes.Email usually becomes this URI key:
+      return (
+        payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
+        payload['email'] ||
+        ''
+      );
+    } catch {
+      return '';
+    }
+  }
+
+
   /** Optional helper for debugging */
   debugClaims(): any {
     return this.getPayload();

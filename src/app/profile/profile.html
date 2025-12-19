@@ -1,39 +1,67 @@
-<mat-card class="profile-card">
-  <h2 class="title">Profile</h2>
-
-  @if (vm$ | async; as vm) {
-
-    <div class="row">
-      <div class="label">Logged in as:</div>
-      <div class="value">{{ vm.username }}</div>
+<div class="page-wrap">
+  <mat-card class="pink-card profile-card">
+    <div class="header">
+      <div>
+        <h2 class="title">Profile</h2>
+        <p class="subtitle muted">Your account + team memberships</p>
+      </div>
     </div>
 
-    <div class="row">
-      <div class="label">JWT System Role (User or Admin):</div>
-      <div class="value">{{ vm.jwtSystemRole }}</div>
-    </div>
+    @if (vm$ | async; as vm) {
 
-    <div class="row">
-      <div class="label">Team Role (Owner or Member):</div>
-      <div class="value">{{ vm.teamRole }}</div>
-    </div>
+      <div class="info-grid">
+        <div class="info">
+          <div class="label">Logged in as</div>
+          <div class="value">{{ vm.username }}</div>
+        </div>
 
-    <h3 class="subtitle">Teams belong to</h3>
+        <div class="info">
+          <div class="label">Email</div>
+          <div class="value">{{ vm.email || '—' }}</div>
+        </div>
 
-    @if (vm.teams.length > 0) {
-      <mat-list>
-        @for (t of vm.teams; track t.teamId) {
-          <mat-list-item>
-            {{ t.name }} — {{ t.myRole }}
-          </mat-list-item>
+        <div class="info">
+          <div class="label">JWT System Role</div>
+          <div class="value">
+            <span class="pill" [class.pill-owner]="vm.jwtSystemRole === 'Admin'">
+              {{ vm.jwtSystemRole }}
+            </span>
+          </div>
+        </div>
+
+        <div class="info">
+          <div class="label">Team Role</div>
+          <div class="value">
+            <span class="pill" [class.pill-owner]="vm.teamRole === 'Owner'">
+              {{ vm.teamRole }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 class="section-title">Teams</h3>
+
+        @if (vm.teams.length > 0) {
+          <mat-list class="team-list">
+            @for (t of vm.teams; track t.teamId) {
+              <mat-list-item class="team-item">
+                <div class="team-row">
+                  <div class="team-name">{{ t.name }}</div>
+                  <span class="pill pill-neutral" [class.pill-owner]="(t.myRole || '').toLowerCase() === 'owner'">
+                    {{ t.myRole }}
+                  </span>
+                </div>
+              </mat-list-item>
+            }
+          </mat-list>
+        } @else {
+          <p class="muted">None</p>
         }
-      </mat-list>
+      </div>
+
     } @else {
-      <p class="muted">No teams loaded yet.</p>
+      <p class="muted">Loading profile…</p>
     }
-
-  } @else {
-    <p class="muted">Loading profile…</p>
-  }
-</mat-card>
-
+  </mat-card>
+</div>
