@@ -87,30 +87,49 @@
         </section>
 
       } @else {
-
         <section class="section">
           <h2 class="section-title">My Team</h2>
 
-          <div class="team-chip">
-            <span class="label">Team</span>
-            <span class="value">{{ teamName || 'Unassigned' }}</span>
-          </div>
-
-          @if (teammates.length > 0) {
-            <div class="cards">
-              @for (member of teammates; track member.userName) {
-                <div class="member-card">
-                  <div class="member-name">{{ member.userName }}</div>
-                  <div class="member-role">{{ member.roleInTeam }}</div>
-                </div>
-              }
-            </div>
+          <!-- If API returned no teammates, user is not in a team -->
+          @if (teammates.length === 0) {
+            <div class="status subtle">You do not belong to a team.</div>
           } @else {
-            <div class="status subtle">No teammates found.</div>
+
+            <!-- Team name from the returned data -->
+            <div class="team-chip">
+              <span class="label">Team</span>
+              <span class="value">{{ teammates[0].teamName || '—' }}</span>
+            </div>
+
+            <!-- Show team table -->
+            <div class="table-shell">
+              <table class="modern-table">
+                <thead>
+                  <tr>
+                    <th>User Name</th>
+                    <th>Role In Team</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (member of teammates; track member.userName) {
+                    <tr>
+                      <td class="mono">{{ member.userName }}</td>
+                      <td>
+                        <span class="pill" [class.pill-owner]="member.roleInTeam === 'Owner'">
+                          {{ member.roleInTeam || '—' }}
+                        </span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
           }
         </section>
-
+        
       }
+
     }
   </div>
 </div>
