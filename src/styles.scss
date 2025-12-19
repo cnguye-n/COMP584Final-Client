@@ -55,3 +55,141 @@ body {
   color: var(--mat-sys-on-background);
 }
 
+/* =========================
+   Shared UI Styles (Global)
+   ========================= */
+
+:root {
+  --ui-radius-lg: 24px;
+  --ui-radius-md: 18px;
+  --ui-border: rgba(139, 122, 130, 0.16);
+  --ui-glass: rgba(255, 255, 255, 0.55);
+  --ui-glass-strong: rgba(255, 255, 255, 0.70);
+  --ui-shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.06);
+  --ui-shadow-card: 0 16px 40px rgba(83, 59, 77, 0.15);
+}
+
+/* Wrapper spacing used across pages */
+.home-wrap,
+.page-wrap {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 48px);
+}
+
+/* Status messages */
+.status {
+  margin: 18px 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(139, 122, 130, 0.25);
+  color: var(--mat-sys-on-background);
+  box-shadow: var(--ui-shadow-soft);
+}
+
+.status.error {
+  background: rgba(245, 100, 169, 0.12);
+  border-color: rgba(245, 100, 169, 0.5);
+}
+
+/* Pink “hero” card used on Home + Team Members */
+.pink-card {
+  padding: 26px 28px;
+  border-radius: var(--ui-radius-lg);
+
+  background: linear-gradient(
+    180deg,
+    rgba(245, 100, 169, 0.18) 0%,
+    rgba(255, 255, 255, 0.65) 100%
+  );
+
+  border: 1px solid rgba(245, 100, 169, 0.25);
+
+  box-shadow:
+    var(--ui-shadow-card),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.pink-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 22px 50px rgba(83, 59, 77, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+/* “Card inside card” shell */
+.table-shell {
+  overflow: hidden;
+  border-radius: var(--ui-radius-md);
+  background: var(--ui-glass);
+  border: 1px solid var(--ui-border);
+}
+
+/* Modern table */
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modern-table thead th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--mat-sys-primary);
+  background: var(--ui-glass-strong);
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.modern-table tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(139, 122, 130, 0.10);
+}
+
+.modern-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.modern-table tbody tr:hover td {
+  background: rgba(245, 100, 169, 0.06);
+}
+
+/* Pills */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: rgba(139, 122, 130, 0.12);
+  border: 1px solid rgba(139, 122, 130, 0.16);
+  color: rgba(58, 47, 53, 0.85);
+}
+
+.pill-owner {
+  background: rgba(245, 100, 169, 0.14);
+  border-color: rgba(245, 100, 169, 0.35);
+}
+
+.pill-neutral {
+  background: rgba(139, 122, 130, 0.10);
+}
+
+.muted {
+  color: rgba(58, 47, 53, 0.7);
+}
+
+/* Bottom breathing room (optional) */
+.page-wrap::after,
+.home-wrap::after {
+  content: '';
+  display: block;
+  height: 64px;
+}
+
+

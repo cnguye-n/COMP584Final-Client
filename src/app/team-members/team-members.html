@@ -1,0 +1,116 @@
+<div class="page-wrap">
+  <div class="pink-card">
+    <div class="bubble-header">
+      <div>
+        <h1 class="title">Team Members</h1>
+
+        @if (isAdmin) {
+          <p class="subtitle">
+            You have admin access. Showing team memberships and users not assigned to any team.
+          </p>
+        } @else {
+          <p class="subtitle">
+            Showing teammates for your current team.
+          </p>
+        }
+      </div>
+    </div>
+
+    @if (loading) {
+      <div class="status">Loading team members...</div>
+    } @else if (error) {
+      <div class="status error">{{ error }}</div>
+    } @else {
+
+      @if (isAdmin) {
+
+        <section class="section">
+          <h2 class="section-title">Team Memberships</h2>
+
+          @if (allUsers.length > 0) {
+            <div class="table-shell">
+              <table class="modern-table">
+                <thead>
+                  <tr>
+                    <th>User Name</th>
+                    <th>Role In Team</th>
+                    <th>Team</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (user of allUsers; track user.userName) {
+                    <tr>
+                      <td class="mono">{{ user.userName }}</td>
+                      <td>
+                        <span class="pill" [class.pill-owner]="user.roleInTeam === 'Owner'">
+                          {{ user.roleInTeam || '—' }}
+                        </span>
+                      </td>
+                      <td>{{ user.teamName || '—' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <div class="status subtle">No team membership records found.</div>
+          }
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Users Not In A Team</h2>
+
+          @if (usersNotInTeam.length > 0) {
+            <div class="table-shell">
+              <table class="modern-table">
+                <thead>
+                  <tr>
+                    <th>User Name</th>
+                    <th>Email</th>
+                    <th>Team</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (u of usersNotInTeam; track u.userId) {
+                    <tr>
+                      <td class="mono">{{ u.userName }}</td>
+                      <td class="muted">{{ u.email || '—' }}</td>
+                      <td><span class="pill pill-neutral">Not in a team</span></td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <div class="status subtle">All users are assigned to a team.</div>
+          }
+        </section>
+
+      } @else {
+
+        <section class="section">
+          <h2 class="section-title">My Team</h2>
+
+          <div class="team-chip">
+            <span class="label">Team</span>
+            <span class="value">{{ teamName || 'Unassigned' }}</span>
+          </div>
+
+          @if (teammates.length > 0) {
+            <div class="cards">
+              @for (member of teammates; track member.userName) {
+                <div class="member-card">
+                  <div class="member-name">{{ member.userName }}</div>
+                  <div class="member-role">{{ member.roleInTeam }}</div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="status subtle">No teammates found.</div>
+          }
+        </section>
+
+      }
+    }
+  </div>
+</div>
