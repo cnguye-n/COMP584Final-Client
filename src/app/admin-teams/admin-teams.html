@@ -1,0 +1,107 @@
+<div class="page-wrap">
+  <mat-card class="pink-card admin-card">
+    <h1 class="title">Admin Teams</h1>
+    <p class="subtitle muted">Manage team memberships (updates the database).</p>
+
+    @if (error) {
+      <div class="status error">{{ error }}</div>
+    }
+
+    @if (vm$ | async; as data) {
+      @let rows = data[0];
+      @let usersNotInTeam = data[1];
+      @let teams = data[2];
+
+      <section class="section">
+        <h2 class="section-title">All Users + Team</h2>
+
+        <div class="table-shell">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Team</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of rows; track r.userId + '-' + (r.teamId ?? 'none')) {
+                <tr>
+                  <td class="mono">{{ r.userName }}</td>
+                  <td class="muted">{{ r.email || '—' }}</td>
+                  <td>{{ r.teamName || '—' }}</td>
+                  <td>
+                    <span class="pill" [class.pill-owner]="(r.roleInTeam || '').toLowerCase() === 'owner'">
+                      {{ r.roleInTeam || '—' }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Add Team Member</h2>
+
+        <form class="form-grid" [formGroup]="addForm">
+          <mat-form-field appearance="outline">
+            <mat-label>User (not in a team)</mat-label>
+            <mat-select formControlName="userId">
+              @for (u of usersNotInTeam; track u.userId) {
+                <mat-option [value]="u.userId">
+                  {{ u.userName }} ({{ u.email || 'no email' }})
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Team</mat-label>
+            <mat-select formControlName="teamId">
+              @for (t of teams; track t.teamId) {
+                <mat-option [value]="t.teamId">{{ t.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <div class="actions">
+            <button mat-raised-button color="primary" type="button" (click)="addMember()">
+              Add to Team
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Remove From Team</h2>
+
+        <form class="form-grid" [formGroup]="removeForm">
+          <mat-form-field appearance="outline">
+            <mat-label>User + Team</mat-label>
+            <mat-select formControlName="membership">
+              @for (r of rows; track r.userId + '-' + (r.teamId ?? 'none')) {
+                @if (r.teamId && (r.roleInTeam || '').toLowerCase() !== 'owner') {
+                  <mat-option [value]="r.userId + '|' + r.teamId">
+                    {{ r.userName }} — {{ r.teamName }} ({{ r.roleInTeam || 'Member' }})
+                  </mat-option>
+                }
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <div class="actions">
+            <button mat-raised-button color="primary" type="button" (click)="removeMember()">
+              Remove
+            </button>
+          </div>
+        </form>
+      </section>
+
+    } @else {
+      <div class="status">Loading admin data…</div>
+    }
+  </mat-card>
+</div>
